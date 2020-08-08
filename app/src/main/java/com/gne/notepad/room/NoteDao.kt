@@ -8,7 +8,7 @@ import androidx.room.Query
 import com.gne.notepad.vo.Note
 
 @Dao
-interface Dao {
+interface NoteDao {
     @Query("Select * from note")
     fun getAllNotes():LiveData<List<Note>>
 
