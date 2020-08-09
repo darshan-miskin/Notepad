@@ -13,7 +13,7 @@ interface NoteDao {
     fun getAllNotes():LiveData<List<Note>>
 
     @Query("Select nt_id, nt_title, nt_body from note where nt_id=:id")
-    fun getNote(id:Int):Note
+    fun getNote(id:Int):LiveData<Note>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertNote(note:Note):Long

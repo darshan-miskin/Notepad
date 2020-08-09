@@ -22,6 +22,10 @@ class NotesAdapter internal constructor(private val onNoteClickListener: OnNoteC
         notifyDataSetChanged()
     }
 
+    internal fun getNote(position: Int):Note{
+        return arrayList.get(position)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesHolder {
         val inflater=LayoutInflater.from(parent.context)
         val binding=DataBindingUtil.inflate<LayoutRecyclerItemBinding>(inflater, R.layout.layout_recycler_item,parent,false)

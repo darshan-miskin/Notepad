@@ -11,7 +11,7 @@ data class Note(@ColumnInfo(name = "nt_title") var title:String,
                 @ColumnInfo(name = "nt_body") var body:String) : Parcelable{
 
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "nt_id")
-    val id:Long?=null
+    var id:Long?=null
 
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,

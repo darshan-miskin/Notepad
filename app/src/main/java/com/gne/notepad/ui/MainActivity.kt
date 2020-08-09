@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -19,7 +20,11 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
 
     private lateinit var binding:ActivityMainBinding
     private val newNoteActivityResultCode = 1
+    private val updateNoteActivityResultCode = 1
     private lateinit var viewModel: NoteViewModel
+    private lateinit var notesAdapter:NotesAdapter
+
+    private val TAG=MainActivity::class.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +32,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
 
         binding.btnFab.setOnClickListener(this)
 
-        val notesAdapter=NotesAdapter(this)
+        notesAdapter=NotesAdapter(this)
         binding.recyclerview.adapter=notesAdapter
 
         viewModel=ViewModelProvider(this).get(NoteViewModel::class.java)
@@ -51,19 +56,29 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
      * NoteAdapter's OnNoteClickListener
      */
     override fun onClick(position: Int) {
-        TODO("Not yet implemented")
+        Toast.makeText(applicationContext,"TODO",Toast.LENGTH_SHORT).show()
+//        val intent=Intent(this,NoteActivity::class.java)
+//        intent.putExtra(NoteActivity.EXTRA_TITLE,notesAdapter.getNote(position).title)
+//        intent.putExtra(NoteActivity.EXTRA_BODY,notesAdapter.getNote(position).body)
+//        startActivityForResult(intent,updateNoteActivityResultCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        val title=data?.getStringExtra(NoteActivity.EXTRA_TITLE)
+        val body=data?.getStringExtra(NoteActivity.EXTRA_BODY)
+
         if (requestCode == newNoteActivityResultCode && resultCode == Activity.RESULT_OK) {
-            val title=data?.getStringExtra(NoteActivity.EXTRA_TITLE)
-            val body=data?.getStringExtra(NoteActivity.EXTRA_BODY)
             if(title!=null && body!=null) {
                 val note = Note(title, body)
                 viewModel.insert(note)
             }
-        } else {
+        }
+        else if(requestCode == updateNoteActivityResultCode && resultCode == Activity.RESULT_OK){
+
+        }
+        else {
             Toast.makeText(applicationContext, "No data", Toast.LENGTH_LONG).show()
         }
     }

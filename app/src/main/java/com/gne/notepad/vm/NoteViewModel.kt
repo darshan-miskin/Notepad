@@ -21,6 +21,6 @@ class NoteViewModel(application: Application):AndroidViewModel(application) {
     }
 
     fun insert(note: Note)=viewModelScope.launch(Dispatchers.IO){
-        val id=repository.insert(note)
+        repository.insert(note)
     }
 }
