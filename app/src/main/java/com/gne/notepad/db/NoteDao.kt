@@ -1,4 +1,4 @@
-package com.gne.notepad.room
+package com.gne.notepad.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -15,7 +15,7 @@ interface NoteDao {
     @Query("Select nt_id, nt_title, nt_body from note where nt_id=:id")
     fun getNote(id:Int):Note
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertNote(note:Note):Long
 
     @Query("delete from note where nt_id=:id")

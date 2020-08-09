@@ -1,4 +1,4 @@
-package com.gne.notepad.room
+package com.gne.notepad.db
 
 import android.content.Context
 import androidx.room.Database

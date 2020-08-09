@@ -5,6 +5,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="editTextStyle">@style/AppTheme.EditTextStyle</item>
+    </style>
+
+    <style name="AppTheme.EditTextStyle" parent="AppTheme">
+        <item name="android:padding">8dp</item>
+        <item name="background">@android:color/transparent</item>
     </style>
 
 </resources>

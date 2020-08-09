@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Notepad</string>
     <string name="new_note">New notes will be visible here</string>
+    <string name="title">Title</string>
+    <string name="note">Note</string>
 </resources>

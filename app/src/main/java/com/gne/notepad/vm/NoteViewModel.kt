@@ -5,8 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.gne.notepad.repo.NoteRepository
-import com.gne.notepad.room.NoteDao
-import com.gne.notepad.room.NoteDatabase
+import com.gne.notepad.db.NoteDatabase
 import com.gne.notepad.vo.Note
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

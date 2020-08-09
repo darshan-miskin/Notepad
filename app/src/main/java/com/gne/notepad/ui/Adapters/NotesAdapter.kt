@@ -9,10 +9,17 @@ import com.gne.notepad.R
 import com.gne.notepad.databinding.LayoutRecyclerItemBinding
 import com.gne.notepad.vo.Note
 
-class NotesAdapter(private val arrayList: ArrayList<Note>,
-                   private val onNoteClickListener: OnNoteClickListener) : RecyclerView.Adapter<NotesAdapter.NotesHolder>() {
+class NotesAdapter internal constructor(private val onNoteClickListener: OnNoteClickListener) : RecyclerView.Adapter<NotesAdapter.NotesHolder>() {
+
+    private var arrayList= emptyList<Note>()
+
     interface OnNoteClickListener{
         fun onClick(position: Int)
+    }
+
+    internal fun setNotes(notes:List<Note>){
+        this.arrayList=notes
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesHolder {
