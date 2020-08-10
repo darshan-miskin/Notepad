@@ -14,6 +14,7 @@ class NoteActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityNoteBinding
     private val TAG=NoteActivity::class.simpleName
+    private var note:Note?=null
 
     companion object {
         const val EXTRA_TITLE = "com.gne.notepad.ui.noteactivity.TITLE"
@@ -25,7 +26,7 @@ class NoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_note)
 
-        val note:Note?=intent.getParcelableExtra(EXTRA_NOTE)
+        note=intent.getParcelableExtra(EXTRA_NOTE)
 
         if(note!=null) {
             binding.note = note
@@ -42,6 +43,7 @@ class NoteActivity : AppCompatActivity() {
         else {
             intent.putExtra(EXTRA_TITLE,title)
             intent.putExtra(EXTRA_BODY,body)
+            intent.putExtra(EXTRA_NOTE,note)
             Activity.RESULT_OK
         }
 

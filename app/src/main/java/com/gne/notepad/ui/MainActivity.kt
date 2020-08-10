@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
 
     private lateinit var binding:ActivityMainBinding
     private val newNoteActivityResultCode = 1
-    private val updateNoteActivityResultCode = 1
+    private val updateNoteActivityResultCode = 2
     private lateinit var viewModel: NoteViewModel
     private lateinit var notesAdapter:NotesAdapter
 
@@ -37,6 +37,14 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
 
         viewModel=ViewModelProvider(this).get(NoteViewModel::class.java)
         viewModel.allNotes.observe(this, Observer { notes -> notes?.let {
+            if(notes.isEmpty()) {
+                binding.recyclerview.visibility = View.GONE
+                binding.layoutNew.visibility = View.VISIBLE
+            }
+            else {
+                binding.layoutNew.visibility = View.GONE
+                binding.recyclerview.visibility = View.VISIBLE
+            }
             notesAdapter.setNotes(notes)
         } })
 
@@ -56,11 +64,10 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
      * NoteAdapter's OnNoteClickListener
      */
     override fun onClick(position: Int) {
-        Toast.makeText(applicationContext,"TODO",Toast.LENGTH_SHORT).show()
-//        val intent=Intent(this,NoteActivity::class.java)
-//        intent.putExtra(NoteActivity.EXTRA_TITLE,notesAdapter.getNote(position).title)
-//        intent.putExtra(NoteActivity.EXTRA_BODY,notesAdapter.getNote(position).body)
-//        startActivityForResult(intent,updateNoteActivityResultCode)
+//        Toast.makeText(applicationContext,"TODO",Toast.LENGTH_SHORT).show()
+        val intent=Intent(this,NoteActivity::class.java)
+        intent.putExtra(NoteActivity.EXTRA_NOTE,notesAdapter.getNote(position))
+        startActivityForResult(intent,updateNoteActivityResultCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -76,10 +83,10 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
             }
         }
         else if(requestCode == updateNoteActivityResultCode && resultCode == Activity.RESULT_OK){
-
-        }
-        else {
-            Toast.makeText(applicationContext, "No data", Toast.LENGTH_LONG).show()
+            val note=data?.getParcelableExtra<Note>(NoteActivity.EXTRA_NOTE)
+            if(note!=null) {
+                viewModel.update(note)
+            }
         }
     }
 }

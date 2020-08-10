@@ -21,7 +21,7 @@ abstract class NoteDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
-                    var wordDao = database.NoteDao()
+//                    var wordDao = database.NoteDao()
                 }
             }
         }
@@ -42,7 +42,8 @@ abstract class NoteDatabase : RoomDatabase() {
                     context.applicationContext,
                     NoteDatabase::class.java,
                     "note_database"
-                ).build()
+                ).addCallback(NoteDatabaseCallback(scope))
+                .build()
                 INSTANCE = instance
                 return instance
             }

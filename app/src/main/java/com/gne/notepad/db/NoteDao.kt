@@ -1,10 +1,7 @@
 package com.gne.notepad.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.gne.notepad.vo.Note
 
 @Dao
@@ -20,4 +17,7 @@ interface NoteDao {
 
     @Query("delete from note where nt_id=:id")
     suspend fun deleteNote(id:Int)
+
+    @Update
+    suspend fun updateNote(note: Note)
 }
