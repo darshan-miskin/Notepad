@@ -41,6 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
+            android:padding="2dp"
+            android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:spanCount="2"
             tools:listitem="@layout/layout_recycler_item"/>
