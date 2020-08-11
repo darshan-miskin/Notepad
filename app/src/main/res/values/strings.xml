@@ -3,4 +3,5 @@
     <string name="new_note">New notes will be visible here</string>
     <string name="title">Title</string>
     <string name="note">Note</string>
+    <string name="delete">Delete</string>
 </resources>

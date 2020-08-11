@@ -4,7 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -47,8 +48,24 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
             }
             notesAdapter.setNotes(notes)
         } })
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.menu,menu)
+        return true
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menu_delete ->{
+                viewModel.delete(viewModel.noteToDelete)
+                Toast.makeText(applicationContext,"Delete note with Id: ${viewModel.noteToDelete}",Toast.LENGTH_SHORT).show()
+                return true
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -64,10 +81,13 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
      * NoteAdapter's OnNoteClickListener
      */
     override fun onClick(position: Int) {
-//        Toast.makeText(applicationContext,"TODO",Toast.LENGTH_SHORT).show()
         val intent=Intent(this,NoteActivity::class.java)
         intent.putExtra(NoteActivity.EXTRA_NOTE,notesAdapter.getNote(position))
         startActivityForResult(intent,updateNoteActivityResultCode)
+    }
+
+    override fun onLongClick(note: Note) {
+        viewModel.noteToDelete=note
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

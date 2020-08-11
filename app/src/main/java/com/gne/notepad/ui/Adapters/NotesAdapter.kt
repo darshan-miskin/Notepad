@@ -15,6 +15,7 @@ class NotesAdapter internal constructor(private val onNoteClickListener: OnNoteC
 
     interface OnNoteClickListener{
         fun onClick(position: Int)
+        fun onLongClick(note: Note)
     }
 
     internal fun setNotes(notes:List<Note>){
@@ -43,6 +44,10 @@ class NotesAdapter internal constructor(private val onNoteClickListener: OnNoteC
     inner class NotesHolder(val binding: LayoutRecyclerItemBinding) : RecyclerView.ViewHolder(binding.root){
         init {
             binding.root.setOnClickListener { onNoteClickListener.onClick(adapterPosition)}
+            binding.root.setOnLongClickListener{
+                onNoteClickListener.onLongClick(arrayList.get(adapterPosition))
+                true
+            }
         }
     }
 }
