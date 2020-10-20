@@ -48,8 +48,6 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
             }
             notesAdapter.setNotes(it)
         } })
-
-        closeOptionsMenu()
     }
 
     private fun resetDelete(){
@@ -59,7 +57,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        return true
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -118,7 +116,6 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
     override fun onLongClick(position: Int) {
         viewModel.isDeleteMode=true
         viewModel.notesToDelete.add(notesAdapter.getNote(position))
-        openOptionsMenu()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
