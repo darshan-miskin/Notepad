@@ -15,7 +15,7 @@ class NoteRepository(private val noteDao: NoteDao) {
         noteDao.updateNote(note)
     }
 
-    suspend fun delete(note: Note){
+    suspend fun delete(note: List<Note>){
         noteDao.deleteNote(note)
     }
 }

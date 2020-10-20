@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
 
         viewModel=ViewModelProvider(this).get(NoteViewModel::class.java)
         viewModel.allNotes.observe(this, Observer { notes -> notes?.let {
-            if(notes.isEmpty()) {
+            if(it.isEmpty()) {
                 binding.recyclerview.visibility = View.GONE
                 binding.layoutNew.visibility = View.VISIBLE
             }
@@ -46,20 +46,36 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
                 binding.layoutNew.visibility = View.GONE
                 binding.recyclerview.visibility = View.VISIBLE
             }
-            notesAdapter.setNotes(notes)
+            notesAdapter.setNotes(it)
         } })
+
+        closeOptionsMenu()
+    }
+
+    private fun resetDelete(){
+        viewModel.notesToDelete.clear()
+        viewModel.isDeleteMode=false
+        notesAdapter.isDeleteMode=false
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu,menu)
+        menuInflater.inflate(R.menu.menu,menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.menu_delete ->{
-                viewModel.delete(viewModel.noteToDelete)
-                Toast.makeText(applicationContext,"Delete note with Id: ${viewModel.noteToDelete}",Toast.LENGTH_SHORT).show()
+                viewModel.delete(viewModel.notesToDelete)
+                Toast.makeText(applicationContext,"Delete note : ${viewModel.notesToDelete}",Toast.LENGTH_SHORT).show()
+                for (i in viewModel.notesToDelete) {
+                    notesAdapter.notifyItemRemoved(i.position)
+                }
+                resetDelete()
                 return true
             }
             else -> {
@@ -80,14 +96,29 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
     /**
      * NoteAdapter's OnNoteClickListener
      */
-    override fun onClick(position: Int) {
-        val intent=Intent(this,NoteActivity::class.java)
-        intent.putExtra(NoteActivity.EXTRA_NOTE,notesAdapter.getNote(position))
-        startActivityForResult(intent,updateNoteActivityResultCode)
+    override fun onClick(position: Int, isSelected:Boolean) {
+        if(viewModel.isDeleteMode){
+            if(isSelected)
+                viewModel.notesToDelete.add(notesAdapter.getNote(position))
+            else
+                viewModel.notesToDelete.remove(notesAdapter.getNote(position))
+        }
+        else {
+            val intent = Intent(this, NoteActivity::class.java)
+            intent.putExtra(NoteActivity.EXTRA_NOTE, notesAdapter.getNote(position))
+            startActivityForResult(intent, updateNoteActivityResultCode)
+        }
+
+        if(viewModel.notesToDelete.isEmpty()) {
+            resetDelete()
+        }
+
     }
 
-    override fun onLongClick(note: Note) {
-        viewModel.noteToDelete=note
+    override fun onLongClick(position: Int) {
+        viewModel.isDeleteMode=true
+        viewModel.notesToDelete.add(notesAdapter.getNote(position))
+        openOptionsMenu()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -108,5 +139,16 @@ class MainActivity : AppCompatActivity(),View.OnClickListener,NotesAdapter.OnNot
                 viewModel.update(note)
             }
         }
+    }
+
+    override fun onBackPressed() {
+        if(viewModel.isDeleteMode){
+            for (i in viewModel.notesToDelete) {
+                notesAdapter.notifyItemChanged(i.position)
+            }
+            resetDelete()
+        }
+        else
+            super.onBackPressed()
     }
 }

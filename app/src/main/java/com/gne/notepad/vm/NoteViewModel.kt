@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 class NoteViewModel(application: Application):AndroidViewModel(application) {
     private val repository:NoteRepository
     val allNotes:LiveData<List<Note>>
-    lateinit var noteToDelete:Note
+    var notesToDelete=ArrayList<Note>()
+    var isDeleteMode = false
 
     init {
         val dao=NoteDatabase.getDatabase(application,viewModelScope).NoteDao()
@@ -29,7 +30,7 @@ class NoteViewModel(application: Application):AndroidViewModel(application) {
         repository.update(note)
     }
 
-    fun delete(note: Note)=viewModelScope.launch(Dispatchers.IO){
+    fun delete(note: List<Note>)=viewModelScope.launch(Dispatchers.IO){
         repository.delete(note)
     }
 }

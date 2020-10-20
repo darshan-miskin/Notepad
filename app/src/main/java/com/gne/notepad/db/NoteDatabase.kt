@@ -13,9 +13,7 @@ import kotlinx.coroutines.launch
 abstract class NoteDatabase : RoomDatabase() {
     abstract fun NoteDao():NoteDao
 
-    private class NoteDatabaseCallback(
-        private val scope: CoroutineScope
-    ) : RoomDatabase.Callback() {
+    private class NoteDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
@@ -31,8 +29,7 @@ abstract class NoteDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: NoteDatabase? = null
 
-        fun getDatabase(context: Context,
-                    scope: CoroutineScope): NoteDatabase {
+        fun getDatabase(context: Context, scope: CoroutineScope): NoteDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null) {
                 return tempInstance
